@@ -68,13 +68,13 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public Address getBillingAddress(User user) {
+	public Address getBillingAddress(int userId) {
 
-		String selectQuery = "FROM Address WHERE user = :user AND billing = :billing";
+		String selectQuery = "FROM Address WHERE userId = :userId AND billing = :billing";
 		
 		try {
 			return sessionFactory.getCurrentSession().createQuery(selectQuery, Address.class)
-					.setParameter("user", user).setParameter("billing", true).getSingleResult();
+					.setParameter("userId", userId).setParameter("billing", true).getSingleResult();
 		}
 		catch(Exception ex) {
 			ex.printStackTrace();
@@ -84,14 +84,14 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public List<Address> listShippingAddresses(User user) {
+	public List<Address> listShippingAddresses(int userId) {
 		
 
-		String selectQuery = "FROM Address WHERE user = :user AND shipping = :shipping";
+		String selectQuery = "FROM Address WHERE userId = :userId AND shipping = :shipping";
 		
 		try {
 			return sessionFactory.getCurrentSession().createQuery(selectQuery, Address.class)
-					.setParameter("user", user).setParameter("shipping", true).getResultList();
+					.setParameter("userId", userId).setParameter("shipping", true).getResultList();
 		}
 		catch(Exception ex) {
 			ex.printStackTrace();
@@ -100,6 +100,29 @@ public class UserDAOImpl implements UserDAO {
 		
 		
 		
+	}
+
+	@Override
+	public Address getAddress(int addressId) {
+		try{
+			return sessionFactory.getCurrentSession().get(Address.class, addressId);
+		}
+		catch(Exception ex){
+			System.out.println(ex.getMessage());
+			return null;
+		}
+		
+	}
+
+	@Override
+	public boolean updateAddress(Address address) {
+		try{
+			sessionFactory.getCurrentSession().update(address);
+			return true;
+		}
+		catch(Exception ex){
+			return false;
+		}		
 	}
 
 }

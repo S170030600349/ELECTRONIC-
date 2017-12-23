@@ -80,6 +80,16 @@ public class CartController {
 		
 		return "redirect:/cart/show?"+response;
 	}
+	@RequestMapping("/validate")
+	public String validateCart(){
+		String response = cartService.validateCartLine();
+		if(!response.equals("result=success")){
+			return "redirect:/cart/show?"+response;
+		}
+		else {
+			return "redirect:/cart/checkout";
+		}
+	}
 	
 	
 	
